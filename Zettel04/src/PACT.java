@@ -12,32 +12,42 @@ public class PACT {
         window.setTitle("Simple GUI");
         window.setSize(800, 600);
         window.setVisible(true);
+        JDialog dialog = buildDialog();
     }
 }
 
 class SimpleExampleGUI extends JFrame {
-    private JButton m_Btn = new JButton("Click me!");
+    private JButton nutzer_hinzufuegen_btn = new JButton("Nutzer hinzufügen");
+    private JButton buch_hinzufuegen_btn = new JButton("Buch aufnehmen");
 
     SimpleExampleGUI() {
         buildMenu();
         JPanel content = new JPanel();
         content.setLayout(new FlowLayout());
-        content.add(m_Btn);
+        content.add(nutzer_hinzufuegen_btn);
+        content.add(buch_hinzufuegen_btn);
 
         this.setContentPane(content);
         this.pack();
 
-        m_Btn.addActionListener(new ActionListener() {
+        nutzer_hinzufuegen_btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               buildDialog();
+               //launchDialog();
             }
         });
+        
+        buch_hinzufuegen_btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               launchDialog();
+            }
+        });
+        
     }
     
     /**
      * Baut das Dialogfenster zum Hinzufügen von Benutzern.
      */
-    private void buildDialog()
+    private JDialog buildDialog()
     {
         //Dialogfenster
         JDialog nutzerHinzu = new JDialog();
@@ -137,8 +147,13 @@ class SimpleExampleGUI extends JFrame {
         // Pack and launch dialog.
         panel.setLayout(layout);
         nutzerHinzu.pack();
-        nutzerHinzu.setVisible(true);
+        return nutzerHinzu;
 
+    }
+    
+    private void launchDialog()
+    {
+        dialog.setVisible(true);
     }
 
     private void buildMenu() {

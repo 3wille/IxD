@@ -2,6 +2,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
 import java.math.*;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class PACT {
@@ -28,9 +29,116 @@ class SimpleExampleGUI extends JFrame {
 
         m_Btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               // ...
+               buildDialog();
             }
         });
+    }
+    
+    /**
+     * Baut das Dialogfenster zum Hinzufügen von Benutzern.
+     */
+    private void buildDialog()
+    {
+        //Dialogfenster
+        JDialog nutzerHinzu = new JDialog();
+        nutzerHinzu.setMinimumSize(new Dimension(300,300));
+        nutzerHinzu.setTitle("Nutzer hinzufügen");
+
+        // Create Lables
+        JLabel name = new JLabel("Name:");
+        JLabel id = new JLabel("ID:");
+        JLabel adresse = new JLabel("Adresse:");
+        JLabel geburt = new JLabel("Geburtsdatum:");
+        JLabel aufnahme = new JLabel("Aufnahmedatum:");
+        
+        // Create Textfields
+        JTextField nameFeld = new JTextField("Name");
+        JTextField adressFeld = new JTextField("Adresse");
+        JTextField geburtsFeld = new JTextField("Geburtsdatum");
+        JTextField aufnahmeFeld = new JTextField("Aufnahmedatum");
+        
+        //Numberfield for IDs
+        JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
+        idFeld.setValue(new Integer(30));
+        idFeld.setColumns(10);
+        idFeld.addKeyListener(new KeyAdapter(){
+            public void keyTyped(KeyEvent e) {
+                char ch = e.getKeyChar();
+                
+                if (ch < '0' || ch > '9') {
+                    e.consume();
+                }}}
+                );
+
+        // Optionpane inside the Dialog
+        JOptionPane option = new JOptionPane(null);
+        Object[] options = {"Abbrechen", "Aufnehmen"};
+        // rename the buttons
+        option.setOptions(options);
+        
+        // Panel inside the Optionpane to prevent Textfields being positioned under the buttons. Dunno if necessary.
+        JPanel panel = new JPanel();
+        option.add(panel, 0);
+        nutzerHinzu.add(option);
+
+        GridBagLayout layout = new GridBagLayout();
+        GridBagConstraints c = new GridBagConstraints();
+        
+        //Set Constraints for Lables and corresponding Textfields and add them to the Panel
+        c.gridx = 0;
+        c.gridy = 0;
+        c.fill = c.HORIZONTAL;
+        layout.setConstraints(name, c);
+        panel.add(name, c);
+        c.gridx = 1;
+        c.gridy = 0;
+        layout.setConstraints(nameFeld, c);
+        panel.add(nameFeld, c);
+        
+        c.gridx = 0;
+        c.gridy = 1;
+        layout.setConstraints(id, c);
+        panel.add(id, c);
+        c.gridx = 1;
+        c.gridy = 1;
+        layout.setConstraints(idFeld, c);
+        panel.add(idFeld, c);
+
+        
+        c.gridx = 0;
+        c.gridy = 2;
+        layout.setConstraints(adresse, c);
+        panel.add(adresse, c);
+        c.gridx = 1;
+        c.gridy = 2;
+        layout.setConstraints(adressFeld, c);
+        panel.add(adressFeld, c);
+
+        
+        c.gridx = 0;
+        c.gridy = 3;
+        layout.setConstraints(geburt, c);
+        panel.add(geburt, c);
+        c.gridx = 1;
+        c.gridy = 3;
+        layout.setConstraints(geburtsFeld, c);
+        panel.add(geburtsFeld, c);
+
+        
+        c.gridx = 0;
+        c.gridy = 4;
+        layout.setConstraints(aufnahme, c);
+        panel.add(aufnahme, c);
+        c.gridx = 1;
+        c.gridy = 4;
+        layout.setConstraints(aufnahmeFeld, c);
+        panel.add(aufnahmeFeld, c);
+
+        // Pack and launch dialog.
+        panel.setLayout(layout);
+        nutzerHinzu.pack();
+        nutzerHinzu.setVisible(true);
+
     }
 
     private void buildMenu() {

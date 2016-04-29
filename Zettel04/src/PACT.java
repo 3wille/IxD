@@ -12,7 +12,6 @@ public class PACT {
         window.setTitle("Simple GUI");
         window.setSize(800, 600);
         window.setVisible(true);
-        JDialog dialog = buildDialog();
     }
 }
 
@@ -26,19 +25,21 @@ class SimpleExampleGUI extends JFrame {
         content.setLayout(new FlowLayout());
         content.add(nutzer_hinzufuegen_btn);
         content.add(buch_hinzufuegen_btn);
-
+        JDialog nutzerDialog = buildDialog();
+        JDialog buchDialog = buildDialog();
+        
         this.setContentPane(content);
         this.pack();
 
         nutzer_hinzufuegen_btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               //launchDialog();
+               nutzerDialog.setVisible(true);
             }
         });
         
         buch_hinzufuegen_btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               launchDialog();
+               buchDialog.setVisible(true);
             }
         });
         
@@ -79,6 +80,13 @@ class SimpleExampleGUI extends JFrame {
                     e.consume();
                 }}}
                 );
+        
+        // Radio buttons for sex
+        JRadioButton maennlich = new JRadioButton("Männlich");
+        JRadioButton weiblich = new JRadioButton("Weiblich");
+        ButtonGroup group = new ButtonGroup();
+        group.add(maennlich);
+        group.add(weiblich);
 
         // Optionpane inside the Dialog
         JOptionPane option = new JOptionPane(null);
@@ -143,19 +151,24 @@ class SimpleExampleGUI extends JFrame {
         c.gridy = 4;
         layout.setConstraints(aufnahmeFeld, c);
         panel.add(aufnahmeFeld, c);
+        
+        c.gridx = 0;
+        c.gridy = 5;
+        layout.setConstraints(maennlich, c);
+        panel.add(maennlich, c);
+        
+        c.gridx = 1;
+        c.gridy = 5;
+        layout.setConstraints(weiblich, c);
+        panel.add(weiblich, c);
 
-        // Pack and launch dialog.
+        // Pack and return dialog.
         panel.setLayout(layout);
         nutzerHinzu.pack();
         return nutzerHinzu;
 
     }
-    
-    private void launchDialog()
-    {
-        dialog.setVisible(true);
-    }
-
+   
     private void buildMenu() {
         JMenuBar menuBar;
         JRadioButtonMenuItem rbMenuItem;
@@ -163,7 +176,7 @@ class SimpleExampleGUI extends JFrame {
 
         menuBar = new JMenuBar();
 
-        ArrayList <JMenu> menus = new ArrayList();
+        ArrayList <JMenu> menus = new ArrayList<JMenu>();
         menus.add(new JMenu("File"));
         menus.add(new JMenu("Datenbank"));
         menus.add(new JMenu("Fenster"));

@@ -96,7 +96,7 @@ class SimpleExampleGUI extends JFrame {
         
         abbrechen_btn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               nutzerHinzu.setVisible(false);
+               nutzerHinzu.dispose();
             }
         });
         

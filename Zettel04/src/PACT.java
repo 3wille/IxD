@@ -342,6 +342,14 @@ class Dialog
                 nutzerHinzu.dispose();
             }
         });
+        
+        aufnehmen_btn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                nutzerHinzu.dispose();
+            }
+        });
         // rename the buttons
         option.setOptions(options);
 

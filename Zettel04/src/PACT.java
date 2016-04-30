@@ -94,7 +94,11 @@ class SimpleExampleGUI extends JFrame {
         JButton aufnehmen_btn = new JButton("Aufnehmen");
         Object[] options = {abbrechen_btn, aufnehmen_btn};
         
-        
+        abbrechen_btn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+               nutzerHinzu.setVisible(false);
+            }
+        });
         
         // rename the buttons
         option.setOptions(options);

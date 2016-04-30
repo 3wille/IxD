@@ -140,9 +140,8 @@ class SimpleExampleGUI extends JFrame
         
         if(BenutzerOrBuch == 0)
         {
-            components.add(new JTextField("Name"));
+            components.add(new JTextField());
             JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
-            idFeld.setValue(new Integer(30));
             idFeld.setColumns(10);
             idFeld.addKeyListener(new KeyAdapter()
             {
@@ -157,15 +156,14 @@ class SimpleExampleGUI extends JFrame
                 }
             });
             components.add(idFeld);
-            components.add(new JTextField("Adresse"));
-            components.add(new JTextField("Geburtsdatum"));
-            components.add(new JTextField("Aufnahmedatum"));
+            components.add(new JTextField());
+            components.add(new JTextField());
+            components.add(new JTextField());
         }
         else
         {
-            components.add(new JTextField("Name"));
+            components.add(new JTextField());
             JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
-            idFeld.setValue(new Integer(30));
             idFeld.setColumns(10);
             idFeld.addKeyListener(new KeyAdapter()
             {
@@ -180,9 +178,9 @@ class SimpleExampleGUI extends JFrame
                 }
             });
             components.add(idFeld);
-            components.add(new JTextField("Adresse"));
-            components.add(new JTextField("Geburtsdatum"));
-            components.add(new JTextField("Aufnahmedatum"));
+            components.add(new JTextField());
+            components.add(new JTextField());
+            components.add(new JTextField());
         }
         return components;
     }
@@ -324,7 +322,7 @@ class Dialog
         nutzerHinzu.setTitle("Nutzer hinzufügen");
         
         nameLabels(labelNamen);
-        nameFields(labelNamen);
+        //nameFields(labelNamen);
 
         
         

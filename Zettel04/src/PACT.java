@@ -18,6 +18,8 @@ public class PACT {
 class SimpleExampleGUI extends JFrame {
     private JButton nutzer_hinzufuegen_btn = new JButton("Nutzer hinzufügen");
     private JButton buch_hinzufuegen_btn = new JButton("Buch aufnehmen");
+    private JButton buch_ausleihen_btn = new JButton("Buch ausleihen");
+    private JButton buch_zurueckgeben_btn = new JButton("Buch zurückgeben");
 
     SimpleExampleGUI() {
         buildMenu();
@@ -25,6 +27,8 @@ class SimpleExampleGUI extends JFrame {
         content.setLayout(new FlowLayout());
         content.add(nutzer_hinzufuegen_btn);
         content.add(buch_hinzufuegen_btn);
+        content.add(buch_ausleihen_btn);
+        content.add(buch_zurueckgeben_btn);
         JDialog nutzerDialog = buildDialog();
         JDialog buchDialog = buildDialog();
         

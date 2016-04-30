@@ -90,7 +90,12 @@ class SimpleExampleGUI extends JFrame {
 
         // Optionpane inside the Dialog
         JOptionPane option = new JOptionPane(null);
-        Object[] options = {"Abbrechen", "Aufnehmen"};
+        JButton abbrechen_btn = new JButton("Abbrechen");
+        JButton aufnehmen_btn = new JButton("Aufnehmen");
+        Object[] options = {abbrechen_btn, aufnehmen_btn};
+        
+        
+        
         // rename the buttons
         option.setOptions(options);
         

@@ -186,7 +186,26 @@ class SimpleExampleGUI extends JFrame {
         menus.add(new JMenu("Fenster"));
         menus.add(new JMenu("Hilfe"));
         menus.forEach((menu) -> menuBar.add(menu));
-
+        menuBar.getMenu(0).add(new JMenuItem("Neue Datenbank"));
+        menuBar.getMenu(0).add(new JSeparator());
+        menuBar.getMenu(0).add(new JMenuItem("Datenbank öffnen"));
+        menuBar.getMenu(0).add(new JMenuItem("Datenbank wechseln"));
+        menuBar.getMenu(0).add(new JMenuItem("Datenbank speichern"));
+        menuBar.getMenu(0).add(new JMenuItem("Datenbank schließen"));
+        menuBar.getMenu(0).add(new JSeparator());
+        menuBar.getMenu(0).add(new JMenuItem("Beenden"));
+        menuBar.getMenu(1).add(new JMenuItem("Benutzer hinzufügen"));
+        menuBar.getMenu(1).add(new JSeparator());
+        menuBar.getMenu(1).add(new JMenuItem("Buch hinzufügen"));
+        menuBar.getMenu(1).add(new JMenuItem("Buch ausleihen"));
+        menuBar.getMenu(1).add(new JMenuItem("Buch zurückgeben"));
+        menuBar.getMenu(2).add(new JMenuItem("Neues Fenster"));
+        menuBar.getMenu(2).add(new JSeparator());
+        menuBar.getMenu(2).add(new JMenuItem("Benutzer anzeigen..."));
+        menuBar.getMenu(2).add(new JMenuItem("Buch anzeigen..."));
+        menuBar.getMenu(3).add(new JMenuItem("Hilfedatei anzeigen"));
+        menuBar.getMenu(3).add(new JSeparator());
+        menuBar.getMenu(3).add(new JMenuItem("Über..."));
         setJMenuBar(menuBar);
     }
 }

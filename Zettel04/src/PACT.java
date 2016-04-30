@@ -202,6 +202,18 @@ class SimpleExampleGUI extends JFrame {
             	};
         });
         
+        user_add.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	nutzerDialog.setVisible(true);
+            	};
+        });
+        
+        book_add.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+            	buchDialog.setVisible(true);
+            	};
+        });
+        
         ArrayList <JMenu> menus = new ArrayList<JMenu>();
         menus.add(new JMenu("Datei"));
         menus.add(new JMenu("Datenbank"));

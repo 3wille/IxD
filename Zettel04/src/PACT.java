@@ -181,7 +181,7 @@ class SimpleExampleGUI extends JFrame {
         menuBar = new JMenuBar();
 
         ArrayList <JMenu> menus = new ArrayList<JMenu>();
-        menus.add(new JMenu("File"));
+        menus.add(new JMenu("Datei"));
         menus.add(new JMenu("Datenbank"));
         menus.add(new JMenu("Fenster"));
         menus.add(new JMenu("Hilfe"));

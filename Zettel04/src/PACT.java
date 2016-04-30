@@ -141,6 +141,7 @@ class SimpleExampleGUI extends JFrame
         if(BenutzerOrBuch == 0)
         {
             components.add(new JTextField());
+            //accept numbers only
             JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
             idFeld.setColumns(10);
             idFeld.addKeyListener(new KeyAdapter()
@@ -156,10 +157,13 @@ class SimpleExampleGUI extends JFrame
                 }
             });
             components.add(idFeld);
+            
             components.add(new JTextField());
             components.add(new JTextField());
             components.add(new JTextField());
+            
             JRadioButton maennlich = new JRadioButton("Männlich");
+            maennlich.setSelected(true);
             JRadioButton weiblich = new JRadioButton("Weiblich");
             ButtonGroup groupSex = new ButtonGroup();
             groupSex.add(maennlich);
@@ -170,7 +174,7 @@ class SimpleExampleGUI extends JFrame
         else
         {
             components.add(new JTextField());
-            
+            //Accept Numbers only
             JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
             idFeld.setColumns(10);
             idFeld.addKeyListener(new KeyAdapter()
@@ -186,12 +190,14 @@ class SimpleExampleGUI extends JFrame
                 }
             });
             components.add(idFeld);
+            
             components.add(new JTextField());
-            //components.add(new JTextField());
+            //Drop down menu
             String[] schlagworte = {"eins", "zwei", "drei"};
-            components.add(new JComboBox(schlagworte));
+            components.add(new JComboBox<String>(schlagworte));
             
             JRadioButton verfuegbar = new JRadioButton("verfügbar");
+            verfuegbar.setSelected(true);
             JRadioButton entliehen = new JRadioButton("entliehen");
             ButtonGroup groupStatus = new ButtonGroup();
             groupStatus.add(verfuegbar);
@@ -214,20 +220,12 @@ class Dialog
     private JOptionPane option;
     private JPanel panel;
     private ArrayList<Component> componentsList;
-    
-    // Create Lables
-    private JLabel name = new JLabel();
-    private JLabel id = new JLabel();
-    private JLabel adresse = new JLabel();
-    private JLabel geburt = new JLabel();
-    private JLabel aufnahme = new JLabel();
-    
-    private JLabel[] labelArray = {name, id, adresse, geburt, aufnahme};
+    private ArrayList<JLabel> labelList;
 
     public void nameLabels(String[] names)
     {
         int i = 0;
-        for(JLabel label: labelArray)
+        for(JLabel label: labelList)
         {
             label.setText(names[i]);
             i += 1;
@@ -255,19 +253,19 @@ class Dialog
         GridBagConstraints c = new GridBagConstraints();
         
         // Add Labels and Fields along with their layout constraints
-        for(int i = 0; i < labelArray.length; i++)
+        c.fill = GridBagConstraints.HORIZONTAL;
+        for(int i = 0; i < labelList.size(); i++)
         {
             c.gridx = 0;
             c.gridy = i;
-            c.fill = c.HORIZONTAL;
-            layout.setConstraints(labelArray[i], c);
-            panel.add(labelArray[i], c);
+            layout.setConstraints(labelList.get(i), c);
+            panel.add(labelList.get(i), c);
             c.gridx = 1;
             c.gridy = i;
             layout.setConstraints(components.get(i), c);
             panel.add(components.get(i), c);
         }
-        for(int i = labelArray.length; i < components.size(); i++)
+        for(int i = labelList.size(); i < components.size(); i++)
         {
             c.gridx = 1;
             c.gridy = i;
@@ -279,6 +277,16 @@ class Dialog
      // Pack and return dialog.
         panel.setLayout(layout);
     }
+    
+    private ArrayList<JLabel> createLabels (String[] labelNamen)
+    {
+        ArrayList<JLabel> labels = new ArrayList<JLabel>();
+        for(String name: labelNamen)
+        {
+            labels.add(new JLabel(name));
+        }
+        return labels;
+    }
 
     /**
      * Baut das Dialogfenster zum Hinzufügen von Benutzern.
@@ -288,6 +296,7 @@ class Dialog
     public Dialog(String[] labelNamen, ArrayList<Component> components)
     {
         componentsList = components;
+        labelList = createLabels(labelNamen);
         
         
         //Dialogfenster

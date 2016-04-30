@@ -35,8 +35,8 @@ class SimpleExampleGUI extends JFrame
         content.add(buch_zurueckgeben_btn);
         
         // Names for the labels inside the dialogs
-        String[] BenutzerLabels = {"Name:", "Adresse:", "ID:", "geburt", "aufnahme"};
-        String[] BuchLabels = {"Titel",  "ISBN", "Verleihstatus", "Entleiher", "Schlagworte"};
+        String[] BenutzerLabels = {"Name:", "ID:", "Adresse:", "Geburtsdatum:", "Aufnahmedatum:"};
+        String[] BuchLabels = {"Titel",  "ISBN", "Entleiher", "Schlagworte", "Verleihstatus"};
         //create a new Dialog
         Dialog nutzerDialog = new Dialog(BenutzerLabels, createComponents(0));
         Dialog buchDialog = new Dialog(BuchLabels, createComponents(1));
@@ -187,8 +187,10 @@ class SimpleExampleGUI extends JFrame
             });
             components.add(idFeld);
             components.add(new JTextField());
-            components.add(new JTextField());
-            components.add(new JTextField());
+            //components.add(new JTextField());
+            String[] schlagworte = {"eins", "zwei", "drei"};
+            components.add(new JComboBox(schlagworte));
+            
             JRadioButton verfuegbar = new JRadioButton("verfügbar");
             JRadioButton entliehen = new JRadioButton("entliehen");
             ButtonGroup groupStatus = new ButtonGroup();
@@ -214,11 +216,11 @@ class Dialog
     private ArrayList<Component> componentsList;
     
     // Create Lables
-    private JLabel name = new JLabel("Name:");
-    private JLabel id = new JLabel("ID:");
-    private JLabel adresse = new JLabel("Adresse:");
-    private JLabel geburt = new JLabel("Geburtsdatum:");
-    private JLabel aufnahme = new JLabel("Aufnahmedatum:");
+    private JLabel name = new JLabel();
+    private JLabel id = new JLabel();
+    private JLabel adresse = new JLabel();
+    private JLabel geburt = new JLabel();
+    private JLabel aufnahme = new JLabel();
     
     private JLabel[] labelArray = {name, id, adresse, geburt, aufnahme};
 
@@ -249,73 +251,30 @@ class Dialog
     
     public void addComponents(ArrayList<Component> components)
     {
-        
-//        // Radio buttons for sex
-//        JRadioButton maennlich = new JRadioButton("Männlich");
-//        JRadioButton weiblich = new JRadioButton("Weiblich");
-//        ButtonGroup group = new ButtonGroup();
-//        group.add(maennlich);
-//        group.add(weiblich);
-        
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         
-        //Set Constraints for Lables and corresponding Textfields and add them to the Panel
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = c.HORIZONTAL;
-        layout.setConstraints(name, c);
-        panel.add(name, c);
-        c.gridx = 1;
-        c.gridy = 0;
-        layout.setConstraints(components.get(0), c);
-        panel.add(components.get(0), c);
+        // Add Labels and Fields along with their layout constraints
+        for(int i = 0; i < labelArray.length; i++)
+        {
+            c.gridx = 0;
+            c.gridy = i;
+            c.fill = c.HORIZONTAL;
+            layout.setConstraints(labelArray[i], c);
+            panel.add(labelArray[i], c);
+            c.gridx = 1;
+            c.gridy = i;
+            layout.setConstraints(components.get(i), c);
+            panel.add(components.get(i), c);
+        }
+        for(int i = labelArray.length; i < components.size(); i++)
+        {
+            c.gridx = 1;
+            c.gridy = i;
+            layout.setConstraints(components.get(i), c);
+            panel.add(components.get(i), c);
+        }
 
-        c.gridx = 0;
-        c.gridy = 1;
-        layout.setConstraints(id, c);
-        panel.add(id, c);
-        c.gridx = 1;
-        c.gridy = 1;
-        layout.setConstraints(components.get(1), c);
-        panel.add(components.get(1), c);
-
-        c.gridx = 0;
-        c.gridy = 2;
-        layout.setConstraints(adresse, c);
-        panel.add(adresse, c);
-        c.gridx = 1;
-        c.gridy = 2;
-        layout.setConstraints(components.get(2), c);
-        panel.add(components.get(2), c);
-
-        c.gridx = 0;
-        c.gridy = 3;
-        layout.setConstraints(geburt, c);
-        panel.add(geburt, c);
-        c.gridx = 1;
-        c.gridy = 3;
-        layout.setConstraints(components.get(3), c);
-        panel.add(components.get(3), c);
-
-        c.gridx = 0;
-        c.gridy = 4;
-        layout.setConstraints(aufnahme, c);
-        panel.add(aufnahme, c);
-        c.gridx = 1;
-        c.gridy = 4;
-        layout.setConstraints(components.get(4), c);
-        panel.add(components.get(4), c);
-
-        c.gridx = 0;
-        c.gridy = 5;
-        layout.setConstraints(components.get(5), c);
-        panel.add(components.get(5), c);
-
-        c.gridx = 1;
-        c.gridy = 5;
-        layout.setConstraints(components.get(6), c);
-        panel.add(components.get(6), c);
         
      // Pack and return dialog.
         panel.setLayout(layout);

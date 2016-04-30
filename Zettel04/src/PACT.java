@@ -19,7 +19,7 @@ public class PACT
 
 class SimpleExampleGUI extends JFrame
 {
-	private JButton nutzer_hinzufuegen_btn = new JButton("Benutzer hinzufügen");
+    private JButton nutzer_hinzufuegen_btn = new JButton("Benutzer hinzufügen");
     private JButton buch_hinzufuegen_btn = new JButton("Buch aufnehmen");
     private JButton buch_ausleihen_btn = new JButton("Buch ausleihen");
     private JButton buch_zurueckgeben_btn = new JButton("Buch zurückgeben");
@@ -36,7 +36,7 @@ class SimpleExampleGUI extends JFrame
         
         // Names for the labels inside the dialogs
         String[] BenutzerLabels = {"Name:", "Adresse:", "ID:", "geburt", "aufnahme"};
-        String[] BuchLabels = {"Titel", "Verleihstatus", "Entleiher", "ISBN", "Schlagworte"};
+        String[] BuchLabels = {"Titel",  "ISBN", "Verleihstatus", "Entleiher", "Schlagworte"};
         //create a new Dialog
         Dialog nutzerDialog = new Dialog(BenutzerLabels, createComponents(0));
         Dialog buchDialog = new Dialog(BuchLabels, createComponents(1));
@@ -88,20 +88,20 @@ class SimpleExampleGUI extends JFrame
         
         /*window_close.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	window.dispose();
-            	};
+                window.dispose();
+                };
         });
         
         user_add.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	nutzerDialog.setVisible(true);
-            	};
+                nutzerDialog.setVisible(true);
+                };
         });
         
         book_add.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-            	buchDialog.setVisible(true);
-            	};
+                buchDialog.setVisible(true);
+                };
         });*/
         
         ArrayList <JMenu> menus = new ArrayList<JMenu>();
@@ -140,9 +140,8 @@ class SimpleExampleGUI extends JFrame
         
         if(BenutzerOrBuch == 0)
         {
-            components.add(new JTextField("Name"));
+            components.add(new JTextField());
             JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
-            idFeld.setValue(new Integer(30));
             idFeld.setColumns(10);
             idFeld.addKeyListener(new KeyAdapter()
             {
@@ -157,15 +156,22 @@ class SimpleExampleGUI extends JFrame
                 }
             });
             components.add(idFeld);
-            components.add(new JTextField("Adresse"));
-            components.add(new JTextField("Geburtsdatum"));
-            components.add(new JTextField("Aufnahmedatum"));
+            components.add(new JTextField());
+            components.add(new JTextField());
+            components.add(new JTextField());
+            JRadioButton maennlich = new JRadioButton("Männlich");
+            JRadioButton weiblich = new JRadioButton("Weiblich");
+            ButtonGroup groupSex = new ButtonGroup();
+            groupSex.add(maennlich);
+            groupSex.add(weiblich);
+            components.add(maennlich);
+            components.add(weiblich);
         }
         else
         {
-            components.add(new JTextField("Name"));
+            components.add(new JTextField());
+            
             JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
-            idFeld.setValue(new Integer(30));
             idFeld.setColumns(10);
             idFeld.addKeyListener(new KeyAdapter()
             {
@@ -180,9 +186,16 @@ class SimpleExampleGUI extends JFrame
                 }
             });
             components.add(idFeld);
-            components.add(new JTextField("Adresse"));
-            components.add(new JTextField("Geburtsdatum"));
-            components.add(new JTextField("Aufnahmedatum"));
+            components.add(new JTextField());
+            components.add(new JTextField());
+            components.add(new JTextField());
+            JRadioButton verfuegbar = new JRadioButton("verfügbar");
+            JRadioButton entliehen = new JRadioButton("entliehen");
+            ButtonGroup groupStatus = new ButtonGroup();
+            groupStatus.add(verfuegbar);
+            groupStatus.add(entliehen);
+            components.add(verfuegbar);
+            components.add(entliehen);
         }
         return components;
     }
@@ -237,12 +250,12 @@ class Dialog
     public void addComponents(ArrayList<Component> components)
     {
         
-        // Radio buttons for sex
-        JRadioButton maennlich = new JRadioButton("Männlich");
-        JRadioButton weiblich = new JRadioButton("Weiblich");
-        ButtonGroup group = new ButtonGroup();
-        group.add(maennlich);
-        group.add(weiblich);
+//        // Radio buttons for sex
+//        JRadioButton maennlich = new JRadioButton("Männlich");
+//        JRadioButton weiblich = new JRadioButton("Weiblich");
+//        ButtonGroup group = new ButtonGroup();
+//        group.add(maennlich);
+//        group.add(weiblich);
         
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -296,13 +309,13 @@ class Dialog
 
         c.gridx = 0;
         c.gridy = 5;
-        layout.setConstraints(maennlich, c);
-        panel.add(maennlich, c);
+        layout.setConstraints(components.get(5), c);
+        panel.add(components.get(5), c);
 
         c.gridx = 1;
         c.gridy = 5;
-        layout.setConstraints(weiblich, c);
-        panel.add(weiblich, c);
+        layout.setConstraints(components.get(6), c);
+        panel.add(components.get(6), c);
         
      // Pack and return dialog.
         panel.setLayout(layout);
@@ -324,14 +337,32 @@ class Dialog
         nutzerHinzu.setTitle("Nutzer hinzufügen");
         
         nameLabels(labelNamen);
-        nameFields(labelNamen);
+        //nameFields(labelNamen);
 
         
         
 
         // Optionpane inside the Dialog
         option = new JOptionPane(null);
-        Object[] options = {"Abbrechen", "Aufnehmen"};
+        JButton abbrechen_btn = new JButton("Abbrechen");
+        JButton aufnehmen_btn = new JButton("Aufnehmen");
+        Object[] options = {abbrechen_btn, aufnehmen_btn};
+        
+        abbrechen_btn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                nutzerHinzu.dispose();
+            }
+        });
+        
+        aufnehmen_btn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                nutzerHinzu.dispose();
+            }
+        });
         // rename the buttons
         option.setOptions(options);
 

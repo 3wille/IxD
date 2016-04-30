@@ -36,7 +36,7 @@ class SimpleExampleGUI extends JFrame
         
         // Names for the labels inside the dialogs
         String[] BenutzerLabels = {"Name:", "Adresse:", "ID:", "geburt", "aufnahme"};
-        String[] BuchLabels = {"Titel", "Verleihstatus", "Entleiher", "ISBN", "Schlagworte"};
+        String[] BuchLabels = {"Titel",  "ISBN", "Verleihstatus", "Entleiher", "Schlagworte"};
         //create a new Dialog
         Dialog nutzerDialog = new Dialog(BenutzerLabels, createComponents(0));
         Dialog buchDialog = new Dialog(BuchLabels, createComponents(1));
@@ -159,10 +159,18 @@ class SimpleExampleGUI extends JFrame
             components.add(new JTextField());
             components.add(new JTextField());
             components.add(new JTextField());
+            JRadioButton maennlich = new JRadioButton("Männlich");
+            JRadioButton weiblich = new JRadioButton("Weiblich");
+            ButtonGroup groupSex = new ButtonGroup();
+            groupSex.add(maennlich);
+            groupSex.add(weiblich);
+            components.add(maennlich);
+            components.add(weiblich);
         }
         else
         {
             components.add(new JTextField());
+            
             JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
             idFeld.setColumns(10);
             idFeld.addKeyListener(new KeyAdapter()
@@ -181,6 +189,13 @@ class SimpleExampleGUI extends JFrame
             components.add(new JTextField());
             components.add(new JTextField());
             components.add(new JTextField());
+            JRadioButton verfuegbar = new JRadioButton("verfügbar");
+            JRadioButton entliehen = new JRadioButton("entliehen");
+            ButtonGroup groupStatus = new ButtonGroup();
+            groupStatus.add(verfuegbar);
+            groupStatus.add(entliehen);
+            components.add(verfuegbar);
+            components.add(entliehen);
         }
         return components;
     }
@@ -235,12 +250,12 @@ class Dialog
     public void addComponents(ArrayList<Component> components)
     {
         
-        // Radio buttons for sex
-        JRadioButton maennlich = new JRadioButton("Männlich");
-        JRadioButton weiblich = new JRadioButton("Weiblich");
-        ButtonGroup group = new ButtonGroup();
-        group.add(maennlich);
-        group.add(weiblich);
+//        // Radio buttons for sex
+//        JRadioButton maennlich = new JRadioButton("Männlich");
+//        JRadioButton weiblich = new JRadioButton("Weiblich");
+//        ButtonGroup group = new ButtonGroup();
+//        group.add(maennlich);
+//        group.add(weiblich);
         
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
@@ -294,13 +309,13 @@ class Dialog
 
         c.gridx = 0;
         c.gridy = 5;
-        layout.setConstraints(maennlich, c);
-        panel.add(maennlich, c);
+        layout.setConstraints(components.get(5), c);
+        panel.add(components.get(5), c);
 
         c.gridx = 1;
         c.gridy = 5;
-        layout.setConstraints(weiblich, c);
-        panel.add(weiblich, c);
+        layout.setConstraints(components.get(6), c);
+        panel.add(components.get(6), c);
         
      // Pack and return dialog.
         panel.setLayout(layout);

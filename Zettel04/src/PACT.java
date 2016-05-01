@@ -7,9 +7,10 @@ import java.util.ArrayList;
 
 public class PACT
 {
-    public static void main(String[] args)
+	static final JFrame window = new SimpleExampleGUI();
+	
+	public static void main(String[] args)
     {
-        JFrame window = new SimpleExampleGUI();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setTitle("Simple GUI");
         window.setSize(800, 600);
@@ -24,22 +25,31 @@ class SimpleExampleGUI extends JFrame
     private JButton buch_ausleihen_btn = new JButton("Buch ausleihen");
     private JButton buch_zurueckgeben_btn = new JButton("Buch zurückgeben");
 
+ // Names for the labels inside the dialogs
+    String[] BenutzerLabels = {"Name:", "ID:", "Adresse:", "Geburtsdatum:", "Aufnahmedatum:"};
+    String[] BuchLabels = {"Titel",  "ISBN", "Entleiher", "Schlagworte", "Verleihstatus"};
+    //create a new Dialog
+    Dialog nutzerDialog = new Dialog(BenutzerLabels, createComponents(0));
+    Dialog buchDialog = new Dialog(BuchLabels, createComponents(1));
+    
+    String[] columnNames = {"Buchtitel", "ISBN", "Entliehen an"};
+    Object[][] exampleData = {{"Human-Computer Interaction", "9780130461094", "Tina Müller"}
+    };
+    JTable datenbank = new JTable(exampleData, columnNames);
+    
     SimpleExampleGUI()
     {
         buildMenu();
         JPanel content = new JPanel();
-        content.setLayout(new FlowLayout());
-        content.add(nutzer_hinzufuegen_btn);
-        content.add(buch_hinzufuegen_btn);
-        content.add(buch_ausleihen_btn);
-        content.add(buch_zurueckgeben_btn);
-        
-        // Names for the labels inside the dialogs
-        String[] BenutzerLabels = {"Name:", "Adresse:", "ID:", "geburt", "aufnahme"};
-        String[] BuchLabels = {"Titel",  "ISBN", "Verleihstatus", "Entleiher", "Schlagworte"};
-        //create a new Dialog
-        Dialog nutzerDialog = new Dialog(BenutzerLabels, createComponents(0));
-        Dialog buchDialog = new Dialog(BuchLabels, createComponents(1));
+        content.setLayout(new BoxLayout(content, 1));
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new FlowLayout());
+        content.add(datenbank);
+        content.add(buttons);
+        buttons.add(nutzer_hinzufuegen_btn);
+        buttons.add(buch_hinzufuegen_btn);
+        buttons.add(buch_ausleihen_btn);
+        buttons.add(buch_zurueckgeben_btn);
 
         this.setContentPane(content);
         this.pack();
@@ -86,23 +96,28 @@ class SimpleExampleGUI extends JFrame
         JMenuItem helpfile = new JMenuItem("Hilfedatei anzeigen");
         JMenuItem about = new JMenuItem("Über...");
         
-        /*window_close.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                window.dispose();
-                };
+        window_close.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e)
+            {
+                PACT.window.dispose();
+                }
         });
         
-        user_add.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                nutzerDialog.setVisible(true);
-                };
+        user_add.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                nutzerDialog.launch();
+            }
         });
         
-        book_add.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                buchDialog.setVisible(true);
-                };
-        });*/
+        book_add.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
+                buchDialog.launch();
+            }
+        });
         
         ArrayList <JMenu> menus = new ArrayList<JMenu>();
         menus.add(new JMenu("Datei"));
@@ -141,6 +156,7 @@ class SimpleExampleGUI extends JFrame
         if(BenutzerOrBuch == 0)
         {
             components.add(new JTextField());
+            //accept numbers only
             JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
             idFeld.setColumns(10);
             idFeld.addKeyListener(new KeyAdapter()
@@ -156,10 +172,13 @@ class SimpleExampleGUI extends JFrame
                 }
             });
             components.add(idFeld);
+            
             components.add(new JTextField());
             components.add(new JTextField());
             components.add(new JTextField());
+            
             JRadioButton maennlich = new JRadioButton("Männlich");
+            maennlich.setSelected(true);
             JRadioButton weiblich = new JRadioButton("Weiblich");
             ButtonGroup groupSex = new ButtonGroup();
             groupSex.add(maennlich);
@@ -170,7 +189,7 @@ class SimpleExampleGUI extends JFrame
         else
         {
             components.add(new JTextField());
-            
+            //Accept Numbers only
             JFormattedTextField idFeld = new JFormattedTextField(NumberFormat.getNumberInstance());
             idFeld.setColumns(10);
             idFeld.addKeyListener(new KeyAdapter()
@@ -186,10 +205,14 @@ class SimpleExampleGUI extends JFrame
                 }
             });
             components.add(idFeld);
+            
             components.add(new JTextField());
-            components.add(new JTextField());
-            components.add(new JTextField());
+            //Drop down menu
+            String[] schlagworte = {"eins", "zwei", "drei"};
+            components.add(new JComboBox<String>(schlagworte));
+            
             JRadioButton verfuegbar = new JRadioButton("verfügbar");
+            verfuegbar.setSelected(true);
             JRadioButton entliehen = new JRadioButton("entliehen");
             ButtonGroup groupStatus = new ButtonGroup();
             groupStatus.add(verfuegbar);
@@ -212,20 +235,12 @@ class Dialog
     private JOptionPane option;
     private JPanel panel;
     private ArrayList<Component> componentsList;
-    
-    // Create Lables
-    private JLabel name = new JLabel("Name:");
-    private JLabel id = new JLabel("ID:");
-    private JLabel adresse = new JLabel("Adresse:");
-    private JLabel geburt = new JLabel("Geburtsdatum:");
-    private JLabel aufnahme = new JLabel("Aufnahmedatum:");
-    
-    private JLabel[] labelArray = {name, id, adresse, geburt, aufnahme};
+    private ArrayList<JLabel> labelList;
 
     public void nameLabels(String[] names)
     {
         int i = 0;
-        for(JLabel label: labelArray)
+        for(JLabel label: labelList)
         {
             label.setText(names[i]);
             i += 1;
@@ -249,76 +264,43 @@ class Dialog
     
     public void addComponents(ArrayList<Component> components)
     {
-        
-//        // Radio buttons for sex
-//        JRadioButton maennlich = new JRadioButton("Männlich");
-//        JRadioButton weiblich = new JRadioButton("Weiblich");
-//        ButtonGroup group = new ButtonGroup();
-//        group.add(maennlich);
-//        group.add(weiblich);
-        
         GridBagLayout layout = new GridBagLayout();
         GridBagConstraints c = new GridBagConstraints();
         
-        //Set Constraints for Lables and corresponding Textfields and add them to the Panel
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = c.HORIZONTAL;
-        layout.setConstraints(name, c);
-        panel.add(name, c);
-        c.gridx = 1;
-        c.gridy = 0;
-        layout.setConstraints(components.get(0), c);
-        panel.add(components.get(0), c);
+        // Add Labels and Fields along with their layout constraints
+        c.fill = GridBagConstraints.HORIZONTAL;
+        for(int i = 0; i < labelList.size(); i++)
+        {
+            c.gridx = 0;
+            c.gridy = i;
+            layout.setConstraints(labelList.get(i), c);
+            panel.add(labelList.get(i), c);
+            c.gridx = 1;
+            c.gridy = i;
+            layout.setConstraints(components.get(i), c);
+            panel.add(components.get(i), c);
+        }
+        for(int i = labelList.size(); i < components.size(); i++)
+        {
+            c.gridx = 1;
+            c.gridy = i;
+            layout.setConstraints(components.get(i), c);
+            panel.add(components.get(i), c);
+        }
 
-        c.gridx = 0;
-        c.gridy = 1;
-        layout.setConstraints(id, c);
-        panel.add(id, c);
-        c.gridx = 1;
-        c.gridy = 1;
-        layout.setConstraints(components.get(1), c);
-        panel.add(components.get(1), c);
-
-        c.gridx = 0;
-        c.gridy = 2;
-        layout.setConstraints(adresse, c);
-        panel.add(adresse, c);
-        c.gridx = 1;
-        c.gridy = 2;
-        layout.setConstraints(components.get(2), c);
-        panel.add(components.get(2), c);
-
-        c.gridx = 0;
-        c.gridy = 3;
-        layout.setConstraints(geburt, c);
-        panel.add(geburt, c);
-        c.gridx = 1;
-        c.gridy = 3;
-        layout.setConstraints(components.get(3), c);
-        panel.add(components.get(3), c);
-
-        c.gridx = 0;
-        c.gridy = 4;
-        layout.setConstraints(aufnahme, c);
-        panel.add(aufnahme, c);
-        c.gridx = 1;
-        c.gridy = 4;
-        layout.setConstraints(components.get(4), c);
-        panel.add(components.get(4), c);
-
-        c.gridx = 0;
-        c.gridy = 5;
-        layout.setConstraints(components.get(5), c);
-        panel.add(components.get(5), c);
-
-        c.gridx = 1;
-        c.gridy = 5;
-        layout.setConstraints(components.get(6), c);
-        panel.add(components.get(6), c);
         
      // Pack and return dialog.
         panel.setLayout(layout);
+    }
+    
+    private ArrayList<JLabel> createLabels (String[] labelNamen)
+    {
+        ArrayList<JLabel> labels = new ArrayList<JLabel>();
+        for(String name: labelNamen)
+        {
+            labels.add(new JLabel(name));
+        }
+        return labels;
     }
 
     /**
@@ -329,6 +311,7 @@ class Dialog
     public Dialog(String[] labelNamen, ArrayList<Component> components)
     {
         componentsList = components;
+        labelList = createLabels(labelNamen);
         
         
         //Dialogfenster

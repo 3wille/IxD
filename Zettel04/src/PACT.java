@@ -29,22 +29,26 @@ class SimpleExampleGUI extends JFrame
     String[] BenutzerLabels = {"Name:", "ID:", "Adresse:", "Geburtsdatum:", "Aufnahmedatum:"};
     String[] BuchLabels = {"Titel",  "ISBN", "Entleiher", "Schlagworte", "Verleihstatus"};
     //create a new Dialog
-    Dialog nutzerDialog = new Dialog(BenutzerLabels, createComponents(0));
-    Dialog buchDialog = new Dialog(BuchLabels, createComponents(1));
+    Dialog nutzerDialog = new Dialog(BenutzerLabels, createComponents(0), "Nutzer hinzufügen");
+    Dialog buchDialog = new Dialog(BuchLabels, createComponents(1), "Buch aufnehmen");
     
     String[] columnNames = {"Buchtitel", "ISBN", "Entliehen an"};
     Object[][] exampleData = {{"Human-Computer Interaction", "9780130461094", "Tina Müller"}
     };
+    JScrollPane scrollPane = new JScrollPane();
     JTable datenbank = new JTable(exampleData, columnNames);
     
     SimpleExampleGUI()
     {
         buildMenu();
+        setButtonTextSize();
+        
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, 1));
         JPanel buttons = new JPanel();
-        buttons.setLayout(new FlowLayout());
-        content.add(datenbank);
+        buttons.setLayout(new GridLayout());
+        scrollPane.setViewportView(datenbank);
+        content.add(scrollPane);
         content.add(buttons);
         buttons.add(nutzer_hinzufuegen_btn);
         buttons.add(buch_hinzufuegen_btn);
@@ -146,6 +150,16 @@ class SimpleExampleGUI extends JFrame
         menuBar.getMenu(3).add(new JSeparator());
         menuBar.getMenu(3).add(about);
         setJMenuBar(menuBar);
+    }
+    
+    private void setButtonTextSize()
+    {
+        float size = (float) (nutzer_hinzufuegen_btn.getFont().getSize() * 1.3);
+        Font btnFont = nutzer_hinzufuegen_btn.getFont().deriveFont(size);
+        nutzer_hinzufuegen_btn.setFont(btnFont);
+        buch_hinzufuegen_btn.setFont(btnFont);
+        buch_ausleihen_btn.setFont(btnFont);
+        buch_zurueckgeben_btn.setFont(btnFont);
     }
     
  // Create Textfields
@@ -308,7 +322,7 @@ class Dialog
      * @param labelNamen names for the labels
      * @param components Textfields to add.
      */
-    public Dialog(String[] labelNamen, ArrayList<Component> components)
+    public Dialog(String[] labelNamen, ArrayList<Component> components, String dialogName)
     {
         componentsList = components;
         labelList = createLabels(labelNamen);
@@ -317,7 +331,7 @@ class Dialog
         //Dialogfenster
         nutzerHinzu = new JDialog();
         nutzerHinzu.setMinimumSize(new Dimension(300, 300));
-        nutzerHinzu.setTitle("Nutzer hinzufügen");
+        nutzerHinzu.setTitle(dialogName);
         
         nameLabels(labelNamen);
         //nameFields(labelNamen);

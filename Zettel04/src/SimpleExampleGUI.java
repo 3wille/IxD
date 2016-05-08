@@ -32,7 +32,7 @@ class SimpleExampleGUI extends JFrame
     private JButton buch_zurueckgeben_btn = new JButton("Buch zurückgeben");
 
     // Names for the labels inside the dialogs
-    String[] BenutzerLabels = {"Name:", "ID:", "Adresse:", "Geburtsdatum:", "Aufnahmedatum:"};
+    String[] BenutzerLabels = {"Name", "ID", "Adresse", "Geburtsdatum", "Aufnahmedatum"};
     String[] BuchLabels = {"Titel",  "ISBN", "Entleiher", "Schlagworte", "Verleihstatus"};
     //create a new Dialog
     Dialog nutzerDialog = new Dialog(BenutzerLabels, createComponents(0), "Nutzer hinzufügen");

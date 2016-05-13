@@ -1,13 +1,21 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.text.NumberFormat;
+import java.util.Observable;
 
 @SuppressWarnings("serial")
-public class ConverterView extends JFrame{
+public class ConverterView extends JFrame implements java.util.Observer{
     private JPanel centerPanel;
+    private ConverterController controller;
+    private JFormattedTextField celsiusField;
+    private JFormattedTextField fahrenField;
+    private JSlider celsiusSlider;
+    private JSlider fahrenSlider;
 
-    public ConverterView(){
+    public ConverterView(ConverterController c){
         buildUI();
+        controller = c;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Simple GUI");
         setSize(900, 400);
@@ -32,19 +40,57 @@ public class ConverterView extends JFrame{
 
     private void buildCelsiusCenter(JPanel center){
         JLabel celsiusLabel = new JLabel("Celsius");
-        JTextField celsiusField = new JTextField();
+        celsiusField = new JFormattedTextField(NumberFormat.getNumberInstance());
+        celsiusField.setValue(new Integer(30));
+        celsiusField.setColumns(10);
+        celsiusField.addKeyListener(new KeyAdapter(){
+            public void keyTyped(KeyEvent e) {
+                char ch = e.getKeyChar();
+
+                if (ch < '0' || ch > '9') {
+                    e.consume();
+                }}}
+        );
         celsiusField.setMaximumSize(new Dimension(60, 40));
         JButton convert2Fahrenheit = new JButton("Convert2Fahrenheit ->");
+        convert2Fahrenheit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                float value = Float.parseFloat(celsiusField.getValue().toString());
+                controller.acknowledgeCelsius(value);
+            }
+        });
+
         center.add(celsiusLabel);
         center.add(celsiusField);
         center.add(convert2Fahrenheit);
     }
 
+
+
+
     private void buildFahrenCenter(JPanel center){
         JButton convert2Celsius = new JButton("<- Convert2Fahreheit");
-        JTextField fahrenField = new JTextField("");
+        fahrenField = new JFormattedTextField(NumberFormat.getNumberInstance());
+        fahrenField.setValue(new Integer(30));
+        fahrenField.setColumns(10);
+        fahrenField.addKeyListener(new KeyAdapter(){
+            public void keyTyped(KeyEvent e) {
+                char ch = e.getKeyChar();
+
+                if (ch < '0' || ch > '9') {
+                    e.consume();
+                }}}
+        );
         fahrenField.setMaximumSize(new Dimension(60, 40));
         JLabel fahrenheitLabel = new JLabel("Fahrenheit");
+        convert2Celsius.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                float value = Float.parseFloat(fahrenField.getValue().toString());
+                controller.acknowledgeFahrenheit(value);
+            }
+        });
         center.add(fahrenheitLabel);
         center.add(fahrenField);
         center.add(convert2Celsius);
@@ -81,5 +127,13 @@ public class ConverterView extends JFrame{
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         return slider;
+    }
+
+
+    @Override
+    public void update(Observable o, Object arg) {
+        ConverterModel model = (ConverterModel) o;
+        celsiusField.setValue(model.getCelsius());
+        fahrenField.setValue(model.getFahrenheit());
     }
 }

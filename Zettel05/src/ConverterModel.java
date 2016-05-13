@@ -1,28 +1,36 @@
-public class ConverterModel{
-    private int celsius;
+public class ConverterModel extends java.util.Observable{
+    private float celsius;
+    private ConverterView view;
 
-    public ConverterModel(){
+    public ConverterModel(ConverterView ConvView){
         celsius = 0;
+        view = ConvView;
     }
 
-    public int getCelsius(){
+    public float getCelsius(){
         return celsius;
     }
-    public int getFahrenheit(){
+    public float getFahrenheit(){
         return celsiusToFahrenheit(celsius);
     }
 
-    public void setFahrenheit(int new_fahrenheit){
+    public void setFahrenheit(float new_fahrenheit){
         celsius = fahrenheitToCelsius(new_fahrenheit);
+        view.update(this, 0);
+
     }
-    public void setCelsius(int new_celsius){
+    public void setCelsius(float new_celsius){
         celsius = new_celsius;
+        view.update(this, 0);
+
     }
 
-    private int celsiusToFahrenheit(int fahrenheit){
-        return (int) ((fahrenheit-32)/1.8);
+    private float celsiusToFahrenheit(float celsius){
+        float result = (float) ((celsius*1.8)+32);
+        return result;
     }
-    private int fahrenheitToCelsius(int celsius){
-        return (int) ((celsius*1.8)+32);
+    private float fahrenheitToCelsius(float fahrenheit){
+        float result = (float) ((fahrenheit-32)/1.8);
+        return result;
     }
 }

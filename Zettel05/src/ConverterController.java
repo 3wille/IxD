@@ -3,7 +3,17 @@ public class ConverterController{
     ConverterView view;
 
     public ConverterController(){
-        model = new ConverterModel();
-        view = new ConverterView();
+        view = new ConverterView(this);
+        model = new ConverterModel(view);
+    }
+
+    public void acknowledgeCelsius(float celsius)
+    {
+        model.setCelsius(celsius);
+    }
+
+    public void acknowledgeFahrenheit(float fahrenheit)
+    {
+        model.setFahrenheit(fahrenheit);
     }
 }

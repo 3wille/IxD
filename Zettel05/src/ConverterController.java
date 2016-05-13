@@ -4,7 +4,8 @@ public class ConverterController{
 
     public ConverterController(){
         view = new ConverterView(this);
-        model = new ConverterModel(view);
+        model = new ConverterModel();
+        model.addObserver(view);
     }
 
     public void acknowledgeCelsius(float celsius)

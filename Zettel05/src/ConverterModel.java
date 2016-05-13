@@ -1,10 +1,9 @@
 public class ConverterModel extends java.util.Observable{
     private float celsius;
-    private ConverterView view;
 
-    public ConverterModel(ConverterView ConvView){
+    public ConverterModel(){
         celsius = 0;
-        view = ConvView;
+
     }
 
     public float getCelsius(){
@@ -16,13 +15,14 @@ public class ConverterModel extends java.util.Observable{
 
     public void setFahrenheit(float new_fahrenheit){
         celsius = fahrenheitToCelsius(new_fahrenheit);
-        view.update(this, 0);
+        setChanged();
+        notifyObservers(0);
 
     }
     public void setCelsius(float new_celsius){
         celsius = new_celsius;
-        view.update(this, 0);
-
+        setChanged();
+        notifyObservers(0);
     }
 
     private float celsiusToFahrenheit(float celsius){

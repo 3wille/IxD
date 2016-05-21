@@ -1,5 +1,7 @@
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.event.*;
 import java.text.NumberFormat;
 import java.util.Observable;
@@ -11,7 +13,8 @@ public class ConverterView extends JFrame implements java.util.Observer{
     private JFormattedTextField celsiusField;
     private JFormattedTextField fahrenField;
     private JSlider celsiusSlider;
-    private JSlider fahrenSlider;
+    private JSlider fahrSlider;
+    private boolean changeAlreadyHandled;
 
     public ConverterView(ConverterController c){
         buildUI();
@@ -27,8 +30,26 @@ public class ConverterView extends JFrame implements java.util.Observer{
         content.setLayout(new BorderLayout());
         content.setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 
-        JSlider celsiusSlider = buildSlider(-40, 120, 0);
-        JSlider fahrSlider = buildSlider(-40, 80, 0);
+        celsiusSlider = buildSlider(-40, 80, 10, 2, 0);
+        celsiusSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                if(!changeAlreadyHandled){
+                    controller.celSliderChanged(e);
+                }
+
+            }
+        });
+        fahrSlider = buildSlider(-40, 176, 10, 5, 32);
+        fahrSlider.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                // only update if a change hasnt already been handled.
+                if(!changeAlreadyHandled) {
+                    controller.fahrSliderChanged(e);
+                }
+            }
+        });
         content.add(celsiusSlider, BorderLayout.WEST);
         content.add(fahrSlider, BorderLayout.EAST);
 
@@ -41,7 +62,7 @@ public class ConverterView extends JFrame implements java.util.Observer{
     private void buildCelsiusCenter(JPanel center){
         JLabel celsiusLabel = new JLabel("Celsius");
         celsiusField = new JFormattedTextField(NumberFormat.getNumberInstance());
-        celsiusField.setValue(new Integer(30));
+        celsiusField.setValue(new Integer(0));
         celsiusField.setColumns(10);
         celsiusField.addKeyListener(new KeyAdapter(){
             public void keyTyped(KeyEvent e) {
@@ -67,12 +88,10 @@ public class ConverterView extends JFrame implements java.util.Observer{
     }
 
 
-
-
     private void buildFahrenCenter(JPanel center){
-        JButton convert2Celsius = new JButton("<- Convert2Fahreheit");
+        JButton convert2Celsius = new JButton("<- Convert2Celsius");
         fahrenField = new JFormattedTextField(NumberFormat.getNumberInstance());
-        fahrenField.setValue(new Integer(30));
+        fahrenField.setValue(new Integer(32));
         fahrenField.setColumns(10);
         fahrenField.addKeyListener(new KeyAdapter(){
             public void keyTyped(KeyEvent e) {
@@ -120,10 +139,10 @@ public class ConverterView extends JFrame implements java.util.Observer{
         centerPanel.add(Box.createRigidArea(new Dimension(5,0)));
     }
 
-    private JSlider buildSlider(int min, int max, int init){
+    private JSlider buildSlider(int min, int max, int majorSpacing, int minorSpacing, int init){
         JSlider slider = new JSlider(JSlider.VERTICAL, min, max, init);
-        slider.setMajorTickSpacing(10);
-        slider.setMinorTickSpacing(1);
+        slider.setMajorTickSpacing(majorSpacing);
+        slider.setMinorTickSpacing(minorSpacing);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
         return slider;
@@ -135,5 +154,12 @@ public class ConverterView extends JFrame implements java.util.Observer{
         ConverterModel model = (ConverterModel) o;
         celsiusField.setValue(model.getCelsius());
         fahrenField.setValue(model.getFahrenheit());
+        // Set the values of the sliders according to the model. changeAlreadyHandled == true avoids infinite loops since
+        // setValue notifies listeners of the Sliders again.
+        int val = (int) model.getFahrenheit();
+        changeAlreadyHandled = true;
+        celsiusSlider.setValue((int) model.getCelsius());
+        fahrSlider.setValue(val);
+        changeAlreadyHandled = false;
     }
 }

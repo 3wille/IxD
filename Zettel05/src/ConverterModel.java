@@ -16,13 +16,13 @@ public class ConverterModel extends java.util.Observable{
     public void setFahrenheit(float new_fahrenheit){
         celsius = fahrenheitToCelsius(new_fahrenheit);
         setChanged();
-        notifyObservers(0);
+        notifyObservers(true);
 
     }
     public void setCelsius(float new_celsius){
         celsius = new_celsius;
         setChanged();
-        notifyObservers(0);
+        notifyObservers(false);
     }
 
     private float celsiusToFahrenheit(float celsius){
